@@ -24,14 +24,13 @@
         
         function Recuperar(){
             $connection = require("dbfactory.php");
-            $sql = "SELECT id, nome, cpf, endereco FROM pessoas";
+            $sql = "SELECT nome, cpf, endereco FROM pessoas"; 
 
             $result = $connection->query($sql);
             echo "<table border='1'>";
-            echo "<tr><th>ID</th><th>Nome</th><th>CPF</th><th>Endereço</th></tr>";
+            echo "<tr><th>Nome</th><th>CPF</th><th>Endereço</th></tr>"; 
             while ($row = $result->fetch_assoc()) {           
                 echo "<tr>"                          
-                        . "<td>".$row["id"]."</td>"
                         . "<td>".$row["nome"]."</td>"
                         . "<td>".$row["cpf"]."</td>"
                         . "<td>".$row["endereco"]."</td>"
@@ -53,7 +52,7 @@
 
         Recuperar();        
     ?>
-    
+    <br>
     <form method="post">
         <label for="nome">Nome:</label>
         <input name="nome" id="nome" type="text">
