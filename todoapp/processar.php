@@ -2,12 +2,13 @@
 
 $connection = require("dbfactory.php");
 
-$descricao = $_POST['description'];
-//Insert
-if ($connection -> 
-  query(@"INSERT INTO todo (description) VALUES ('$descricao');")) { 
+$nome = $_POST['nome'];
+$cpf = $_POST['cpf'];
+$endereco = $_POST['endereco'];
+
+if ($connection->query("INSERT INTO pessoas (nome, cpf, endereco) VALUES ('$nome', '$cpf', '$endereco')")) { 
   echo "Inserido com sucesso.";
 }
 
-$connection -> close();
+$connection->close();
 ?>

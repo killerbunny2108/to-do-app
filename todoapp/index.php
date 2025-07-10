@@ -1,69 +1,73 @@
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário</title>
+    <title>Cadastro de Pessoas</title>
 </head>
 <body>
     <?php
-        function Atualizar($idTodo, $description){
+        function Atualizar($id, $nome, $cpf, $endereco){
             $connection = require("dbfactory.php");                        
-            if ($connection -> 
-                query(@"UPDATE todo SET description = '$todo' WHERE idTodo = '$idTodo'")) {                 
+            if ($connection->query("UPDATE pessoas SET nome = '$nome', cpf = '$cpf', endereco = '$endereco' WHERE id = '$id'")) {                 
+                echo "Atualizado com sucesso.";
             }
-            $connection -> close();
+            $connection->close();
         }
-        function Salvar($todo){
+        
+        function Salvar($nome, $cpf, $endereco){
             $connection = require("dbfactory.php");                        
-            if ($connection -> 
-                query(@"INSERT INTO todo (description) VALUES ('$todo');")) {                 
+            if ($connection->query("INSERT INTO pessoas (nome, cpf, endereco) VALUES ('$nome', '$cpf', '$endereco')")) {                 
+                echo "Salvo com sucesso.";
             }
-            $connection -> close();
+            $connection->close();
         }
+        
         function Recuperar(){
             $connection = require("dbfactory.php");
-            $sql = "SELECT idtodo, description FROM todo";
+            $sql = "SELECT id, nome, cpf, endereco FROM pessoas";
 
-            $result = $mysqli->query($sql);
-            echo "<table>";
+            $result = $connection->query($sql);
+            echo "<table border='1'>";
+            echo "<tr><th>ID</th><th>Nome</th><th>CPF</th><th>Endereço</th></tr>";
             while ($row = $result->fetch_assoc()) {           
-                echo "<div>"; 
                 echo "<tr>"                          
-                        . "<td hidden>".$row["idtodo"]."</td>"
-                        . "<td>".$row["description"]."</td>"
+                        . "<td>".$row["id"]."</td>"
+                        . "<td>".$row["nome"]."</td>"
+                        . "<td>".$row["cpf"]."</td>"
+                        . "<td>".$row["endereco"]."</td>"
                     ."</tr>";
-            
-                echo "</div>";
             }
             echo "</table>";
+            $connection->close();
         }      
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $description = htmlspecialchars($_POST['description']); 
-            if(!empty($description)){
-                Salvar($description);
-            }           
-        } 
-        if ($_SERVER["REQUEST_METHOD"] == "PUT") {
-            $description = htmlspecialchars($_POST['description']); 
-            if(!empty($description)){
-                Atualizar($description);
-            }           
-        } 
-        if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
-            $description = htmlspecialchars($_POST['description']); 
-            if(!empty($description)){
-                //Atualizar($description);
+            $nome = $_POST['nome']; 
+            $cpf = $_POST['cpf'];
+            $endereco = $_POST['endereco'];
+            
+            if(!empty($nome) && !empty($cpf) && !empty($endereco)){
+                Salvar($nome, $cpf, $endereco);
             }           
         }      
 
         Recuperar();        
     ?>
+    
     <form method="post">
-        <label for="todo-description">Descrição da tarefa:</label>
-        <input name="description" id="todo-description" type="text">
+        <label for="nome">Nome:</label>
+        <input name="nome" id="nome" type="text">
+        <br><br>
+        
+        <label for="cpf">CPF:</label>
+        <input name="cpf" id="cpf" type="text">
+        <br><br>
+        
+        <label for="endereco">Endereço:</label>
+        <input name="endereco" id="endereco" type="text">
+        <br><br>
+        
         <button type="submit">Salvar</button>
     </form> 
 </body>
-<script src="/js/index.js"></script>
 </html>
